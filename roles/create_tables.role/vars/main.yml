@@ -1,0 +1,12 @@
+---
+# vars file for create_tables.role
+
+mysqld_ip: "192.168.0.10"
+
+
+tables:
+ - { schema_name: "employees",table_name: "employees (emp_no INT,birth_date DATE,first_name VARCHAR(14),last_name VARCHAR(16),gender ENUM ('M','F'),hire_date DATE)"}
+ - { schema_name: "departments",table_name: "departments (dept_no CHAR(4),dept_name VARCHAR(40))"}
+ - { schema_name: "dept_manager",table_name: "dept_manager (emp_no INT,dept_no CHAR(4),from_date DATE,to_date DATE)"}
+ - { schema_name: "titles",table_name: "titles (emp_no INT,title VARCHAR(50),from_date DATE,to_date DATE)"}
+ - { schema_name: "salaries",table_name: "salaries (emp_no INT,salary INT,from_date DATE,to_date DATE)"}

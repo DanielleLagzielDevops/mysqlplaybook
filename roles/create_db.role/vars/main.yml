@@ -1,0 +1,12 @@
+---
+# vars file for create_db.role
+
+mysqld_ip: "192.168.0.10"
+
+schema_name:
+  - { name: "employees" }
+  - { name: "departments" }
+  - { name: "dept_manager" }
+  - { name: "titles" }
+  - { name: "salaries" }
+

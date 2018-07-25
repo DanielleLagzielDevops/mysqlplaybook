@@ -1,0 +1,10 @@
+---
+# tasks file for create_tables.role
+
+- name: find default passwords
+  shell: docker logs mysql1 2>&1 | grep PASSWORD | cut -d':' -f2 | cut -d' ' -f2
+  register: def_pass
+
+- name: craete tables
+  shell: mysql -h'{{ mysqld_ip }}' -uroot -p'{{ def_pass.stdout }}'  -e \ "CREATE TABLE {{ item.schema_name }}.{{ item.table_name }};"
+  with_items: "{{ tables }}"

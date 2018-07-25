@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  roles:
+    - { role: create_mysql_cluster.role }
+    - { role: create_db.role }
+    - { role: create_tables.role }

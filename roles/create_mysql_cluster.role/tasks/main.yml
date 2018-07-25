@@ -1,0 +1,41 @@
+---
+# tasks file for create_mysql_cluster.role
+#- remote_user: ansible
+#  become: yes
+#  become_method: sudo
+
+- name: install needed pkgs
+  yum:
+    name: '{{ item.name }}'
+    state: latest
+  with_items: "{{ pkgs_pre_install }}"
+
+- name: Install python influxdb
+  pip: name=pymssql
+
+- name: Create a network with options
+  docker_network:
+      name: '{{ docker_network }}'
+      driver_options:
+        com.docker.network.bridge.name: '{{ net_bridge }}'
+      ipam_options:
+        subnet: '{{ net_subnet }}'
+
+
+- name: Create db container and connect to network, management1, management1
+  docker_container:
+    name: '{{ item.name }}'
+    image: '{{ item.image }}'
+    networks:
+     - name: network_one
+       ipv4_address: '{{ item.ipaddr }}'
+    command: '{{ item.command }}'
+  with_items: "{{ docker_container_params }}"
+
+
+- name: Create db container and connect to network, mysql1 mysqld
+  shell: docker run -d --net=network_one --name={{ item.name }} --ip={{ item.ipaddr }} -e MYSQL_RANDOM_ROOT_PASSWORD=true {{ item.image }} {{ item.command }}
+  with_items: "{{ params_mysqld }}"
+  ignore_errors: true
+
+

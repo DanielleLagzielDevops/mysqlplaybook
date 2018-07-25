@@ -1,0 +1,21 @@
+---
+# vars file for create_mysql_cluster.role
+
+pkgs_pre_install:
+  - { name: "epel-release" }
+  - { name: "python-pip" }
+  - { name: "mysql" }
+
+#network params
+docker_network: "network_one"
+net_bridge: "net2"
+net_subnet: "192.168.0.0/16"
+
+
+docker_container_params:
+  - { name: 'db-management' , image: 'mysql/mysql-cluster' , ipaddr: '192.168.0.2' , command: 'ndb_mgmd --initial' }
+  - { name: "ndb1" , image: "mysql/mysql-cluster" , ipaddr: "192.168.0.3" , command: "ndbd --initial" }
+  - { name: "ndb2" , image: "mysql/mysql-cluster" , ipaddr: "192.168.0.4" , command: "ndb_mgmd --initial" }
+
+params_mysqld:
+  - { name: "mysql1" , image: "mysql/mysql-cluster" , ipaddr: "192.168.0.10" , command: "mysqld" }
